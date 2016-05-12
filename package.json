@@ -1,0 +1,16 @@
+{
+  "build": {
+    "app-bundle-id": "com.cafeparadox.Laser",
+    "app-category-type": "public.app-category.productivity",
+    "asar": false
+  },
+  "scripts": {
+    "postinstall": "install-app-deps",
+    "pack": "build",
+    "dist": "build"
+  },
+  "devDependencies": {
+    "electron-builder": "^3.20.0",
+    "electron-prebuilt": "^1.0.1"
+  }
+}
