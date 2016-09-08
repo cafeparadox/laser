@@ -3,7 +3,7 @@
   "description": "A simple productivity app that combines a task list with tools for using the pomorodo technique.",
   "homepage": "https://github.com/cafeparadox/laser",
   "license": "MIT",
-  "author": "Sonny George",
+  "author": "Sonny George <sonny@cafeparadox.com>",
   "version": "0.1.0",
   "main": "main.js"
 }
