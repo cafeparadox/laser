@@ -6,7 +6,7 @@ window.addEventListener("load", function load(event) {
 }, false);
 
 function init() {
-  console.log('init settings');
+  console.log('initializing index');
   const settingsElement = document.querySelector('.settings-button');
 
   settingsElement.addEventListener('click', function onClick() {

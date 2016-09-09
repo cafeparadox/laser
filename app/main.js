@@ -73,3 +73,11 @@ ipcMain.on('open-settings-window', (event, arg) => {
     })
   }
 })
+
+ipcMain.on('close-settings-window', (event, args) => {
+  console.log('closing settings window')
+  
+  if (settingsWindow) {
+    settingsWindow.close();
+  }
+})

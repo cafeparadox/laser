@@ -25,7 +25,16 @@ body {
   right: 38px;
 }
 
+.close-button {
+
+}
+
 .settings-icon {
   background: transparent url('../images/settings.png') no-repeat 4px 4px;
   background-size: 24px 24px;
+}
+
+.close-icon {
+    background: transparent url('../images/close.png') no-repeat 4px 4px;
+    background-size: 24px 24px;
 }
