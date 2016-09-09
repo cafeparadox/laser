@@ -1,4 +1,7 @@
+// const electron = require('electron')
 const electron = require('electron')
+const {ipcMain} = require('electron')
+
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -51,3 +54,22 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+var settingsWindow = null
+
+ipcMain.on('open-settings-window', (event, arg) => {
+  console.log('opening settings window')
+
+  if (!settingsWindow) {
+    settingsWindow = new BrowserWindow({
+      frame: false,
+      height: 200,
+      resizable: false,
+      width: 200
+    })
+
+    settingsWindow.loadURL(`file://${__dirname}/settings.html`)
+    settingsWindow.on('closed', function closeSettingsWindow() {
+      settingsWindow = null
+    })
+  }
+})

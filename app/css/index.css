@@ -1,0 +1,31 @@
+body {
+    background-color: red;
+}
+
+.icon-button {
+  cursor: pointer;
+  display: inline-block;
+  height: 32px;
+  position: absolute;
+  text-indent: -10000px;
+  top: 6px;
+  width: 32px;
+  z-index: 1;
+
+  -webkit-app-region: no-drag;
+}
+
+.left-border {
+  border-left: solid;
+  border-width: thin;
+  border-color: lightgray;
+}
+
+.settings-button {
+  right: 38px;
+}
+
+.settings-icon {
+  background: transparent url('../images/settings.png') no-repeat 4px 4px;
+  background-size: 24px 24px;
+}
