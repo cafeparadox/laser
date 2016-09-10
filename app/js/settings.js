@@ -1,6 +1,7 @@
 const {ipcRenderer} = require('electron')
 
 window.addEventListener("load", function load(event) {
+    console.log(window)
     window.removeEventListener("load", load, false); //remove listener, no longer needed
     init();
 }, false);

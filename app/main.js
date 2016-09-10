@@ -1,6 +1,9 @@
 // const electron = require('electron')
 const electron = require('electron')
 const {ipcMain} = require('electron')
+const path = require('path')
+
+const configuration = require('./configuration')
 
 // Module to control application life.
 const app = electron.app
@@ -19,7 +22,7 @@ function createWindow () {
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
@@ -30,10 +33,18 @@ function createWindow () {
     })
 }
 
+function loadConfiguration() {
+    const configurationFile = path.resolve(app.getPath('userData'), 'settings.json')
+    configuration.load(configurationFile)
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', function () {
+  loadConfiguration()
+  createWindow()
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -62,9 +73,11 @@ ipcMain.on('open-settings-window', (event, arg) => {
   if (!settingsWindow) {
     settingsWindow = new BrowserWindow({
       frame: false,
-      height: 200,
+      height: 400,
       resizable: false,
-      width: 200
+      width: 400,
+      parent: mainWindow,
+      modal: true
     })
 
     settingsWindow.loadURL(`file://${__dirname}/settings.html`)
@@ -76,7 +89,7 @@ ipcMain.on('open-settings-window', (event, arg) => {
 
 ipcMain.on('close-settings-window', (event, args) => {
   console.log('closing settings window')
-  
+
   if (settingsWindow) {
     settingsWindow.close();
   }
