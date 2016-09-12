@@ -15,8 +15,17 @@ const BrowserWindow = electron.BrowserWindow
 let mainWindow
 
 function createWindow () {
+
+  // acceptFirstMouse: true,
+  // titleBarStyle: 'hidden'
+
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 800, height: 600})
+    mainWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      minWidth: 400,
+      minHeight: 300
+    })
 
     // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/index.html`)
@@ -77,11 +86,17 @@ ipcMain.on('open-settings-window', (event, arg) => {
       resizable: false,
       width: 400,
       parent: mainWindow,
-      modal: true
+      modal: true,
+      show: false
     })
 
     settingsWindow.loadURL(`file://${__dirname}/settings.html`)
-    settingsWindow.on('closed', function closeSettingsWindow() {
+
+    settingsWindow.on('ready-to-show', () => {
+      settingsWindow.show()
+    })
+
+    settingsWindow.on('closed', () => {
       settingsWindow = null
     })
   }
@@ -91,6 +106,8 @@ ipcMain.on('close-settings-window', (event, args) => {
   console.log('closing settings window')
 
   if (settingsWindow) {
-    settingsWindow.close();
+    // calling close by itself causes the window to 'flicker'
+    settingsWindow.hide()
+    settingsWindow.close()
   }
 })
