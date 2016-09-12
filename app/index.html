@@ -8,9 +8,30 @@
     <!-- Stylesheets -->
     <link href="css/laser.css" rel="stylesheet" type="text/css"/>
     <link href="css/index.css" rel="stylesheet" type="text/css"/>
+    <link href="css/timer.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-  <span class="settings-button left-border icon-button settings-icon"/>
+  <span class="settings-button left-border icon-button settings-icon"></span>
+
+  <h1>Countdown Clock</h1>
+  <div id="clockdiv">
+    <div>
+      <span class="days"></span>
+      <div class="smalltext">Days</div>
+    </div>
+    <div>
+      <span class="hours"></span>
+      <div class="smalltext">Hours</div>
+    </div>
+    <div>
+      <span class="minutes"></span>
+      <div class="smalltext">Minutes</div>
+    </div>
+    <div>
+      <span class="seconds"></span>
+      <div class="smalltext">Seconds</div>
+    </div>
+  </div>
 
   <!-- might include this in <about> later -->
 
@@ -20,5 +41,6 @@
     and Electron <script>document.write(process.versions.electron)</script>. -->
 
     <script src="js/index.js"></script>
+    <script src="js/timer.js"></script>
 </body>
 </html>
