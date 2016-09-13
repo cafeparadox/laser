@@ -1,4 +1,10 @@
-/*background: #00ECB9;*/
+/* Palette URL: http://paletton.com/#uid=1010u0kpnrSfEBnkGuisymWvVi6 */
+.color-primary-0 { color: #DE322E }
+.color-primary-1 { color: #FF8682 }
+.color-primary-2 { color: #F15955 }
+.color-primary-3 { color: #B71814 }
+.color-primary-4 { color: #900400 }
+
 body {
   background-color: #DE342E;
   text-align: center;
@@ -26,4 +32,34 @@ main div {
 
     margin-left: auto;
     margin-right: auto;
+}
+
+.btn {
+	background-color:#F15955;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border:1px solid #F15955;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:11px 23px;
+	text-decoration:none;
+}
+.btn:hover {
+	background-color:#900400;
+}
+.btn:active {
+	position:relative;
+	top:1px;
+}
+.btn:focus {
+  outline: none
+}
+
+.btn-bar {
+  padding: 15px;
 }
