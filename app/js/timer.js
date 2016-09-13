@@ -17,23 +17,36 @@ function init() {
   const startTimerButton = document.querySelector('.start-button')
 
   const timer = new Timer({duration: 10 * 1000})
-  timer.on('tick', onTimerEvent)
-  timer.on('complete', onTimerEvent)
+  timer.on('complete', onTimerComplete)
+  timer.on('tick', onTimerTick)
 
-  setClockDisplay({days: 0, hours: 0, minutes: 0, seconds: 10})
+  initClockDisplay()
 
   startTimerButton.addEventListener('click', startTimer)
 
   function startTimer() {
     if (timer.status() !== 'started') {
       console.log(`starting timer :: duration = ${timer.duration}`);
+      startTimerButton.innerHTML = "PAUSE"
       timer.start()
+    } else {
+      startTimerButton.innerHTML = "RESUME"
+      timer.pause()
     }
   }
 
-  function onTimerEvent(time) {
+  function onTimerTick(time) {
     // console.log(`onTimerEvent :: ${event.remaining}`)
     setClockDisplay(time)
+  }
+
+  function onTimerComplete(time) {
+    initClockDisplay()
+  }
+
+  function initClockDisplay() {
+    setClockDisplay({days: 0, hours: 0, minutes: 0, seconds: 10})
+    startTimerButton.innerHTML = "START"
   }
 
   function setClockDisplay(time) {
