@@ -2,44 +2,48 @@
 const Timer = require('./clock/js/timer')
 
 window.addEventListener("load", function load(event) {
-    window.removeEventListener("load", load, false); //remove listener, no longer needed
-    init();
-}, false);
+    window.removeEventListener("load", load, false) //remove listener, no longer needed
+    init()
+}, false)
 
 function init() {
-  console.log('initializing timer');
+  console.log('initializing timer')
+
+  const clock = document.getElementById('clockdiv')
+  const daysSpan = clock.querySelector('.days')
+  const hoursSpan = clock.querySelector('.hours')
+  const minutesSpan = clock.querySelector('.minutes')
+  const secondsSpan = clock.querySelector('.seconds')
   const startTimerButton = document.querySelector('.start-button')
 
-  startTimerButton.addEventListener('click', onClick)
-}
-
-function onClick() {
-  startTimer('clockdiv', {duration: 25 * 60 * 1000})
-}
-
-function startTimer(id, duration) {
-  console.log(`starting timer :: duration = ${duration}`);
-  const clock = document.getElementById(id);
-  const daysSpan = clock.querySelector('.days');
-  const hoursSpan = clock.querySelector('.hours');
-  const minutesSpan = clock.querySelector('.minutes');
-  const secondsSpan = clock.querySelector('.seconds');
-
-  var timer = new Timer(duration)
+  const timer = new Timer({duration: 10 * 1000})
   timer.on('tick', onTimerEvent)
   timer.on('complete', onTimerEvent)
-  timer.on('start', onTimerEvent)
-  timer.start()
 
-  function onTimerEvent(event) {
-    console.log(`onTimerEvent :: ${event.remaining}`)
-    daysSpan.innerHTML = leftPad(event.days);
-    hoursSpan.innerHTML = leftPad(event.hours);
-    minutesSpan.innerHTML = leftPad(event.minutes);
-    secondsSpan.innerHTML = leftPad(event.seconds);
+  setClockDisplay({days: 0, hours: 0, minutes: 0, seconds: 10})
+
+  startTimerButton.addEventListener('click', startTimer)
+
+  function startTimer() {
+    if (timer.status() !== 'started') {
+      console.log(`starting timer :: duration = ${timer.duration}`);
+      timer.start()
+    }
   }
-}
 
-function leftPad(text, padText = '0') {
-  return `${padText}${text}`.slice(-2);
+  function onTimerEvent(time) {
+    // console.log(`onTimerEvent :: ${event.remaining}`)
+    setClockDisplay(time)
+  }
+
+  function setClockDisplay(time) {
+    daysSpan.innerHTML = leftPad(time.days);
+    hoursSpan.innerHTML = leftPad(time.hours);
+    minutesSpan.innerHTML = leftPad(time.minutes);
+    secondsSpan.innerHTML = leftPad(time.seconds);
+  }
+
+  function leftPad(text, padText = '0') {
+    return `${padText}${text}`.slice(-2);
+  }
 }
