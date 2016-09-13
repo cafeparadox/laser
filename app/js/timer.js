@@ -1,54 +1,43 @@
-// duration in milliseconds
-const duration = 25 * 60 * 1000
+// const {ipcRenderer} = require('electron')
+const Timer = require('./clock/js/timer')
 
-console.log('timer loaded')
-initializeClock('clockdiv', duration);
+window.addEventListener("load", function load(event) {
+    window.removeEventListener("load", load, false); //remove listener, no longer needed
+    init();
+}, false);
 
-function getTimeRemaining(elapsed, duration){
-  // console.log(`getTimeRemaining :: (${elapsed}, ${duration})`)
-  const t = duration - elapsed;
-  const seconds = Math.floor( (t/1000) % 60 );
-  const minutes = Math.floor( (t/1000/60) % 60 );
-  const hours = Math.floor( (t/(1000*60*60)) % 24 );
-  const days = Math.floor( t/(1000*60*60*24) );
-  return {
-    'total': t,
-    'days': days,
-    'hours': hours,
-    'minutes': minutes,
-    'seconds': seconds
-  };
+function init() {
+  console.log('initializing timer');
+  const startTimerButton = document.querySelector('.start-button')
+
+  startTimerButton.addEventListener('click', onClick)
 }
 
-function initializeClock(id, duration){
-  console.log(`initializeClock :: duration = ${duration}`);
+function onClick() {
+  startTimer('clockdiv', {duration: 25 * 60 * 1000})
+}
+
+function startTimer(id, duration) {
+  console.log(`starting timer :: duration = ${duration}`);
   const clock = document.getElementById(id);
   const daysSpan = clock.querySelector('.days');
   const hoursSpan = clock.querySelector('.hours');
   const minutesSpan = clock.querySelector('.minutes');
   const secondsSpan = clock.querySelector('.seconds');
 
-  var elapsed = 0
-  var lastUpdate = Date.now()
+  var timer = new Timer(duration)
+  timer.on('tick', onTimerEvent)
+  timer.on('complete', onTimerEvent)
+  timer.on('start', onTimerEvent)
+  timer.start()
 
-  function updateClock(){
-    const t = getTimeRemaining(elapsed, duration);
-    daysSpan.innerHTML = leftPad(t.days);
-    hoursSpan.innerHTML = leftPad(t.hours);
-    minutesSpan.innerHTML = leftPad(t.minutes);
-    secondsSpan.innerHTML = leftPad(t.seconds);
-
-    if(t.total<=0){
-      clearInterval(timeinterval);
-    }
-
-    const currentUpdate = Date.now()
-    elapsed += currentUpdate - lastUpdate
-    lastUpdate = currentUpdate
+  function onTimerEvent(event) {
+    console.log(`onTimerEvent :: ${event.remaining}`)
+    daysSpan.innerHTML = leftPad(event.days);
+    hoursSpan.innerHTML = leftPad(event.hours);
+    minutesSpan.innerHTML = leftPad(event.minutes);
+    secondsSpan.innerHTML = leftPad(event.seconds);
   }
-
-  updateClock(); // run function once at first to avoid delay
-  const timeinterval = setInterval(updateClock, 1000);
 }
 
 function leftPad(text, padText = '0') {
