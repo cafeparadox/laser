@@ -1,5 +1,5 @@
 // const {ipcRenderer} = require('electron')
-const Timer = require('./clock/js/timer')
+const Timer = require('./timer/timer.js')
 
 window.addEventListener("load", function load(event) {
     window.removeEventListener("load", load, false) //remove listener, no longer needed
