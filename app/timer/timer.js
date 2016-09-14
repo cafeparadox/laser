@@ -14,13 +14,9 @@ const stateDescriptions = {
 
 function getTimeRemaining(elapsed, duration) {
   const remaining = duration - elapsed
-  const seconds = Math.floor((remaining / 1000) % 60)
-  const minutes = Math.floor((remaining / (1000 * 60)) % 60)
-  const hours = Math.floor((remaining / (1000 * 60 * 60)) % 24)
-  const days = Math.floor(remaining / (1000 * 60 * 60 * 24))
 
   return {
-    remaining, days, hours, minutes, seconds
+    remaining
   }
 }
 
