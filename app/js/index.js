@@ -1,4 +1,7 @@
+require('./clock/clock.js')
 const {ipcRenderer} = require('electron')
+
+console.log('index.js')
 
 window.addEventListener("load", function load(event) {
     window.removeEventListener("load", load, false); //remove listener, no longer needed

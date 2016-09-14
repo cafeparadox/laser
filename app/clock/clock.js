@@ -1,5 +1,7 @@
 // const {ipcRenderer} = require('electron')
-const Timer = require('./timer/timer.js')
+const Timer = require('../timer/timer.js')
+
+console.log('clock.js')
 
 window.addEventListener("load", function load(event) {
     window.removeEventListener("load", load, false) //remove listener, no longer needed
@@ -10,8 +12,6 @@ function init() {
   console.log('initializing timer')
 
   const clock = document.getElementById('clockdiv')
-  const daysSpan = clock.querySelector('.days')
-  const hoursSpan = clock.querySelector('.hours')
   const minutesSpan = clock.querySelector('.minutes')
   const secondsSpan = clock.querySelector('.seconds')
   const startTimerButton = document.querySelector('.start-button')
@@ -54,11 +54,7 @@ function init() {
   function setClockDisplay(timeRemaining) {
     const seconds = Math.floor((timeRemaining / 1000) % 60)
     const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60)
-    const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24)
-    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24))
 
-    daysSpan.innerHTML = leftPad(days);
-    hoursSpan.innerHTML = leftPad(hours);
     minutesSpan.innerHTML = leftPad(minutes);
     secondsSpan.innerHTML = leftPad(seconds);
   }
