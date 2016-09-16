@@ -82,14 +82,10 @@ ipcMain.on('open-settings-window', (event, arg) => {
       show: false
     })
 
-    settingsWindow.loadURL(`file://${__dirname}/settings.html`)
+    settingsWindow.loadURL(`file://${__dirname}/settings/settings.html`)
 
     settingsWindow.on('ready-to-show', () => {
       settingsWindow.show()
-    })
-
-    settingsWindow.on('closed', () => {
-      settingsWindow = null
     })
   }
 })
@@ -101,5 +97,6 @@ ipcMain.on('close-settings-window', (event, args) => {
     // calling close by itself causes the window to 'flicker'
     settingsWindow.hide()
     settingsWindow.close()
+    settingsWindow = null
   }
 })

@@ -1,20 +1,3 @@
-.icon-button {
-  cursor: pointer;
-  display: inline-block;
-  height: 32px;
-  position: absolute;
-  top: 6px;
-  width: 32px;
-  z-index: 1;
-
-  -webkit-app-region: no-drag;
-}
-
-.left-border {
-  border-left: solid;
-  border-width: thin;
-  border-color: lightgray;
-}
 
 .settings-button {
   right: 38px;
