@@ -13,15 +13,18 @@ function init() {
   console.log('initializing clock')
 
   if (!configuration.getValue('timer')) {
-    console.log(`no settings defined, using defaults: ${defaultSettings}`)
+    console.log('default settings loaded')
     configuration.setValue('timer', defaultSettings);
+  } else {
+    console.log('user settings loaded')
   }
-  const config = configuration.getValue('timer')
+
+  const timerConfig = configuration.getValue('timer')
   const clock = document.getElementById('clockdiv')
   const minutesSpan = clock.querySelector('.minutes')
   const secondsSpan = clock.querySelector('.seconds')
   const startTimerButton = document.querySelector('.start-button')
-  const duration = config.duration
+  const duration = timerConfig.duration
 
   const timer = new Timer({duration: duration})
   timer.on('complete', onTimerComplete)
