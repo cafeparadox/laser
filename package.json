@@ -9,7 +9,8 @@
     "postinstall": "install-app-deps",
     "pack": "build",
     "dist": "build",
-    "start": "electron app"
+    "start": "electron app",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "electron-builder": "^6.5.2",
