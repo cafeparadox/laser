@@ -1,12 +1,19 @@
 'use strict'
 
-const nconf = require('nconf')
+const Config = require('electron-config')
+const config = new Config()
 
-function load(file) {
-  console.log(`loading settings from ${file}`)
-  nconf.file({file: file})
+console.log(`settings loaded from ${config.path}`)
+
+function getValue(key) {
+    return config.get(key)
+}
+
+function setValue(key, value) {
+  config.set(key, value)
 }
 
 module.exports = {
-    load: load
+    getValue: getValue,
+    setValue: setValue
 }

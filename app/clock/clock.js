@@ -1,5 +1,6 @@
-// const {ipcRenderer} = require('electron')
 const Timer = require('../timer/timer.js')
+const configuration = require('../configuration')
+const defaultSettings = require('./default-settings')
 
 console.log('clock.js')
 
@@ -9,13 +10,18 @@ window.addEventListener("load", function load(event) {
 }, false)
 
 function init() {
-  console.log('initializing timer')
+  console.log('initializing clock')
 
+  if (!configuration.getValue('timer')) {
+    console.log(`no settings defined, using defaults: ${defaultSettings}`)
+    configuration.setValue('timer', defaultSettings);
+  }
+  const config = configuration.getValue('timer')
   const clock = document.getElementById('clockdiv')
   const minutesSpan = clock.querySelector('.minutes')
   const secondsSpan = clock.querySelector('.seconds')
   const startTimerButton = document.querySelector('.start-button')
-  const duration = 10 * 1000
+  const duration = config.duration
 
   const timer = new Timer({duration: duration})
   timer.on('complete', onTimerComplete)
