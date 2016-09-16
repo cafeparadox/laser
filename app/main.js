@@ -64,6 +64,14 @@ app.on('activate', () => {
     }
 })
 
+app.on('quit', (evt, exitCode) => {
+    console.log(`application quit with exit code: ${exitCode}`)
+})
+
+process.on('uncaughtException', (err) => {
+    console.error('uncaught exception (restart suggested): ', err)
+})
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 var settingsWindow = null
