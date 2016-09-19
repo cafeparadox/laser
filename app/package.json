@@ -5,5 +5,10 @@
   "license": "MIT",
   "author": "Sonny George <sonny@cafeparadox.com>",
   "version": "0.1.0",
-  "main": "main.js"
+  "main": "main.js",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "electron-config": "^0.2.1",
+    "material-design-lite": "^1.2.1"
+  }
 }
