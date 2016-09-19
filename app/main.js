@@ -7,16 +7,6 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-const path = require('path');
-
-var devMode = (process.argv || []).indexOf('--dev') !== -1;
-
-if (devMode) {
-  // load the app dependencies
-  var PATH_APP_NODE_MODULES = path.join(__dirname, 'app', 'node_modules');
-  require('module').globalPaths.push(PATH_APP_NODE_MODULES);
-}
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -100,6 +90,7 @@ ipcMain.on('open-settings-window', (event, arg) => {
       show: false
     })
 
+    settingsWindow.webContents.openDevTools()
     settingsWindow.loadURL(`file://${__dirname}/settings/settings.html`)
 
     settingsWindow.on('ready-to-show', () => {

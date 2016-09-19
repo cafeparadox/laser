@@ -24,7 +24,7 @@ function init() {
   const minutesSpan = clock.querySelector('.minutes')
   const secondsSpan = clock.querySelector('.seconds')
   const startTimerButton = document.querySelector('.start-button')
-  const duration = timerConfig.duration
+  const duration = timerConfig.duration * 60 * 1000
 
   const timer = new Timer({duration: duration})
   timer.on('complete', onTimerComplete)
