@@ -1,6 +1,8 @@
 // const electron = require('electron')
 const electron = require('electron')
-const {ipcMain} = require('electron')
+const ipcMain = electron.ipcMain
+
+global.configuration = require('./configuration')
 
 // Module to control application life.
 const app = electron.app

@@ -1,5 +1,7 @@
-const {ipcRenderer} = require('electron')
-const configuration = require('../configuration')
+const electron = require('electron')
+const remote = electron.remote
+const ipcRenderer = electron.ipcRenderer
+const configurationTest = require('../configuration')
 
 window.addEventListener("load", function load(event) {
     console.log(window)
@@ -10,7 +12,12 @@ window.addEventListener("load", function load(event) {
 function init() {
   console.log('init settings');
   const closeElement = document.querySelector('.close-button');
+  const configuration = remote.getGlobal('configuration')
   const timerConfig = configuration.getValue('timer')
+
+  configuration.on('config-timer', (config) => {
+    console.log(`timer config change: ${config.duration}`)
+  })
 
   closeElement.addEventListener('click', (event) => {
     clearSettingsElements(timerConfig)

@@ -1,19 +1,26 @@
 'use strict'
 
 const Config = require('electron-config')
-const config = new Config()
+const EventEmitter = require('events')
 
-console.log(`settings loaded from ${config.path}`)
+const Configuration = function (options) {
+  this.config = options.config
 
-function getValue(key) {
-    return config.get(key)
+  console.log(`settings loaded from ${this.config.path}`)
 }
 
-function setValue(key, value) {
-  config.set(key, value)
+Configuration.prototype = new EventEmitter
+Configuration.prototype.getValue = function(key) {
+  return this.config.get(key)
 }
 
-module.exports = {
-    getValue: getValue,
-    setValue: setValue
+Configuration.prototype.setValue = function(key, value) {
+  this.config.set(key, value)
+  this.emit(`config-${key}`, value)
 }
+
+// only instantiate the configuration once
+
+const configuration = new Configuration({config: new Config()})
+
+module.exports = configuration

@@ -1,6 +1,11 @@
 const Timer = require('../timer/timer.js')
-const configuration = require('../configuration')
+// const configuration = require('../configuration')
+const configurationTest = require('../configuration')
+
 const defaultSettings = require('./default-settings')
+const electron = require('electron')
+const remote = electron.remote
+const configuration = remote.getGlobal('configuration')
 
 console.log('clock.js')
 
@@ -12,6 +17,14 @@ window.addEventListener("load", function load(event) {
 function init() {
   console.log('initializing clock')
 
+  configuration.on('config-timer', (config) => {
+    // console.log(`clock.js:: timer config change: ${config.duration}`)
+    if (timer.status() !== 'started' && timer.status() !== 'paused') {
+      initTimer()
+      initClockDisplay()
+    }
+  })
+
   if (!configuration.getValue('timer')) {
     console.log('default settings loaded')
     configuration.setValue('timer', defaultSettings);
@@ -19,20 +32,26 @@ function init() {
     console.log('user settings loaded')
   }
 
-  const timerConfig = configuration.getValue('timer')
   const clock = document.getElementById('clockdiv')
   const minutesSpan = clock.querySelector('.minutes')
   const secondsSpan = clock.querySelector('.seconds')
   const startTimerButton = document.querySelector('.start-button')
-  const duration = timerConfig.duration * 60 * 1000
 
-  const timer = new Timer({duration: duration})
+
+  const timer = new Timer({})
   timer.on('complete', onTimerComplete)
   timer.on('tick', onTimerTick)
 
+  initTimer()
   initClockDisplay()
 
   startTimerButton.addEventListener('click', startTimer)
+
+  function initTimer() {
+    const timerConfig = configuration.getValue('timer')
+    const duration = timerConfig.duration * 60 * 1000
+    timer.setDuration(duration);
+  }
 
   function startTimer() {
     if (timer.status() !== 'started') {
@@ -56,7 +75,7 @@ function init() {
   }
 
   function initClockDisplay() {
-    setClockDisplay(duration)
+    setClockDisplay(timer.duration)
     startTimerButton.innerHTML = "START"
   }
 

@@ -39,7 +39,7 @@ function onInterval(timer) {
 }
 
 const Timer = function (options) {
-  this.duration = options.duration
+  this.duration = options.duration || 1000
   this.interval = options.interval || 1000
   this.elapsed = 0
   this.state = notStarted
@@ -67,6 +67,12 @@ Timer.prototype.pause = function() {
     this.state = paused
 
     this.emit('pause', getTimeRemaining(this.elapsed, this.duration))
+  }
+}
+
+Timer.prototype.setDuration = function(duration) {
+  if (this.state !== started && this.state !== paused) {
+    this.duration = duration
   }
 }
 
