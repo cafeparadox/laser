@@ -32,7 +32,8 @@ function init() {
       if (element) {
         setElementValue(element, config[id])
         setElementLabel(element, config[id])
-        element.addEventListener('input', onSettingChange)
+        element.addEventListener('change', onSettingChange)
+        element.addEventListener('input', onSettingInput)
       } else {
         console.log(`no element found for id: '${id}'`)
       }
@@ -43,7 +44,8 @@ function init() {
     Object.keys(config).forEach((id) => {
       const element = document.getElementById(id)
       if (element) {
-        element.removeEventListener('input', onSettingChange)
+        element.removeEventListener('change', onSettingChange)
+        element.removeEventListener('input', onSettingInput)
       }
     })
   }
@@ -51,10 +53,15 @@ function init() {
   function onSettingChange(event) {
     const element = event.currentTarget
     const value = getElementValue(element)
-    // console.log(`${element.id} changed: ${value}`)
+    console.log(`${element.id} changed: ${value}`)
 
     timerConfig[element.id] = value
     configuration.setValue('timer', timerConfig)
+  }
+
+  function onSettingInput(event) {
+    const element = event.currentTarget
+    const value = getElementValue(element)
 
     setElementLabel(element, value)
   }
