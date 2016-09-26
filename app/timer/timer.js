@@ -27,14 +27,14 @@ function onInterval(timer) {
 
   const timeRemaining = getTimeRemaining(timer.elapsed, timer.duration)
 
-  timer.emit('tick', timeRemaining)
-
   if (timeRemaining.remaining <= 0) {
     clearInterval(timer.intervalReference)
     timer.state = completed
     timer.elapsed = 0
 
     timer.emit('complete', timeRemaining)
+  } else {
+    timer.emit('tick', timeRemaining)
   }
 }
 
