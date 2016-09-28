@@ -5,6 +5,6 @@ module.exports = {
   autoStart: false,
   dailyTarget: 11,
   restInterval: 4,
-  playTick: true,
-  alarmSound: null
+  tickSound: "tick1",
+  alarmSound: "bluesGuitar"
 }

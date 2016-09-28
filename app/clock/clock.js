@@ -6,6 +6,7 @@ const defaultSettings = require('./default-settings')
 const electron = require('electron')
 const remote = electron.remote
 const configuration = remote.getGlobal('configuration')
+const audio = require('../audio/audio')
 
 console.log('clock.js')
 
@@ -67,11 +68,13 @@ function init() {
   function onTimerTick(time) {
     // console.log(`onTimerEvent :: ${event.remaining}`)
     setClockDisplay(time.remaining)
+    playTickSound()
   }
 
   function onTimerComplete(time) {
     console.log('timer complete')
     initClockDisplay()
+    playAlarmSound()
   }
 
   function initClockDisplay() {
@@ -89,6 +92,16 @@ function init() {
 
   function leftPad(text, padText = '0') {
     return `${padText}${text}`.slice(-2);
+  }
+
+  function playTickSound() {
+    const timerConfig = configuration.getValue('timer')
+    audio.playTick(timerConfig.tickSound)
+  }
+
+  function playAlarmSound() {
+    const timerConfig = configuration.getValue('timer')
+    audio.playAlarm(timerConfig.alarmSound)
   }
 }
 

@@ -1,7 +1,8 @@
 const electron = require('electron')
 const remote = electron.remote
 const ipcRenderer = electron.ipcRenderer
-const configurationTest = require('../configuration')
+const configuration = require('../configuration')
+const audio = require('../audio/audio')
 
 window.addEventListener("load", function load(event) {
     console.log(window)
@@ -35,9 +36,11 @@ function init() {
         element.addEventListener('change', onSettingChange)
         element.addEventListener('input', onSettingInput)
       } else {
-        console.log(`no element found for id: '${id}'`)
+        console.log(`no element found for config: '${id}'`)
       }
     })
+
+    initSelectElements()
   }
 
   function clearSettingsElements(config) {
@@ -48,6 +51,36 @@ function init() {
         element.removeEventListener('input', onSettingInput)
       }
     })
+  }
+
+  function initSelectElements() {
+    const tickSelectElement = document.getElementById('tickSound')
+    const alarmSelectElement = document.getElementById('alarmSound')
+
+    initSelectElement(tickSelectElement, audio.playTick, audio.getTickSounds(), timerConfig.tickSound)
+    initSelectElement(alarmSelectElement, audio.playAlarm, audio.getAlarmSounds(), timerConfig.alarmSound)
+  }
+
+  function initSelectElement(element, onChange, values, selectedValue) {
+    if (element) {
+      element.onchange = (event) => {
+        onChange(event.currentTarget.value)
+      }
+
+      values.forEach(value => {
+        element.add(createOption(value, value, value === selectedValue))
+      })
+    }
+  }
+
+  function createOption(label, value, selected) {
+      const option = document.createElement("option")
+
+      option.label = label
+      option.value = value
+      option.selected = selected
+
+      return option
   }
 
   function onSettingChange(event) {
@@ -102,6 +135,11 @@ function init() {
       }
     }
   }
+
+  /*
+    TODO See if there is a way to query the DOM to see if there a label element
+      has been assigned to the passed element i.e. <label for="">
+  */
 
   function hasLabel(element) {
     return element && isRangeSlider(element)
