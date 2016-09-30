@@ -4,26 +4,15 @@ const ipcRenderer = electron.ipcRenderer
 const configuration = require('../configuration')
 const audio = require('../audio/audio')
 
-window.addEventListener("load", function load(event) {
-    console.log(window)
-    window.removeEventListener("load", load, false); //remove listener, no longer needed
-    init();
-}, false);
-
-function init() {
+window.onload = (event) => {
   console.log('init settings');
   const closeElement = document.querySelector('.close-button');
   const configuration = remote.getGlobal('configuration')
   const timerConfig = configuration.getValue('timer')
 
-  configuration.on('config-timer', (config) => {
-    console.log(`timer config change: ${config.duration}`)
-  })
-
-  closeElement.addEventListener('click', (event) => {
-    clearSettingsElements(timerConfig)
+  closeElement.onclick = (event) => {
     ipcRenderer.send('close-settings-window');
-  })
+  }
 
   initSettingElements(timerConfig)
 
@@ -33,24 +22,14 @@ function init() {
       if (element) {
         setElementValue(element, config[id])
         setElementLabel(element, config[id])
-        element.addEventListener('change', onSettingChange)
-        element.addEventListener('input', onSettingInput)
+        element.onchange = onSettingChange
+        element.oninput = onSettingInput
       } else {
         console.log(`no element found for config: '${id}'`)
       }
     })
 
     initSelectElements()
-  }
-
-  function clearSettingsElements(config) {
-    Object.keys(config).forEach((id) => {
-      const element = document.getElementById(id)
-      if (element) {
-        element.removeEventListener('change', onSettingChange)
-        element.removeEventListener('input', onSettingInput)
-      }
-    })
   }
 
   function initSelectElements() {
@@ -86,7 +65,7 @@ function init() {
   function onSettingChange(event) {
     const element = event.currentTarget
     const value = getElementValue(element)
-    console.log(`${element.id} changed: ${value}`)
+    // console.log(`${element.id} changed: ${value}`)
 
     timerConfig[element.id] = value
     configuration.setValue('timer', timerConfig)
