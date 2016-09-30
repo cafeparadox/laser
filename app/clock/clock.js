@@ -8,14 +8,9 @@ const remote = electron.remote
 const configuration = remote.getGlobal('configuration')
 const audio = require('../audio/audio')
 
-console.log('clock.js')
+// console.log('clock.js')
 
-window.addEventListener("load", function load(event) {
-    window.removeEventListener("load", load, false) //remove listener, no longer needed
-    init()
-}, false)
-
-function init() {
+window.onload = (event) => {
   console.log('initializing clock')
 
   configuration.on('config-timer', (config) => {
@@ -38,7 +33,6 @@ function init() {
   const secondsSpan = clock.querySelector('.seconds')
   const startTimerButton = document.querySelector('.start-button')
 
-
   const timer = new Timer({})
   timer.on('complete', onTimerComplete)
   timer.on('tick', onTimerTick)
@@ -46,7 +40,7 @@ function init() {
   initTimer()
   initClockDisplay()
 
-  startTimerButton.addEventListener('click', startTimer)
+  startTimerButton.onclick = startTimer
 
   function initTimer() {
     const timerConfig = configuration.getValue('timer')
@@ -56,7 +50,7 @@ function init() {
 
   function startTimer() {
     if (timer.status() !== 'started') {
-      console.log(`starting timer :: duration = ${timer.duration}`);
+      // console.log(`starting timer :: duration = ${timer.duration}`);
       startTimerButton.innerHTML = "PAUSE"
       timer.start()
     } else {
@@ -72,7 +66,7 @@ function init() {
   }
 
   function onTimerComplete(time) {
-    console.log('timer complete')
+    // console.log('timer complete')
     initClockDisplay()
     playAlarmSound()
   }
