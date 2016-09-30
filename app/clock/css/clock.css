@@ -22,19 +22,11 @@
     display: inline-block;
 }
 
+.hidden {
+  display: none;
+}
+
 .smalltext{
     padding-top: 5px;
     font-size: 16px;
-}
-
-.start-button {
-
-}
-
-.stop-button {
-
-}
-
-.resume-button {
-
 }

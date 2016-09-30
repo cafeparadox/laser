@@ -13,6 +13,11 @@ const audio = require('../audio/audio')
 window.onload = (event) => {
   console.log('initializing clock')
 
+  const stateReady = Symbol()
+  const stateActive = Symbol()
+  const statePaused = Symbol()
+  let currentState = stateReady
+
   configuration.on('config-timer', (config) => {
     // console.log(`clock.js:: timer config change: ${config.duration}`)
     if (timer.status() !== 'started' && timer.status() !== 'paused') {
@@ -31,7 +36,10 @@ window.onload = (event) => {
   const clock = document.getElementById('clockdiv')
   const minutesSpan = clock.querySelector('.minutes')
   const secondsSpan = clock.querySelector('.seconds')
-  const startTimerButton = document.querySelector('.start-button')
+  const startButton = document.getElementById('startButton')
+  const pauseButton = document.getElementById('pauseButton')
+  const stopButton = document.getElementById('stopButton')
+  const resumeButton = document.getElementById('resumeButton')
 
   const timer = new Timer({})
   timer.on('complete', onTimerComplete)
@@ -39,8 +47,12 @@ window.onload = (event) => {
 
   initTimer()
   initClockDisplay()
+  setButtonStates()
 
-  startTimerButton.onclick = startTimer
+  startButton.onclick = startTimer
+  pauseButton.onclick = pauseTimer
+  stopButton.onclick = stopTimer
+  resumeButton.onclick = resumeTimer
 
   function initTimer() {
     const timerConfig = configuration.getValue('timer')
@@ -49,14 +61,37 @@ window.onload = (event) => {
   }
 
   function startTimer() {
-    if (timer.status() !== 'started') {
-      // console.log(`starting timer :: duration = ${timer.duration}`);
-      startTimerButton.innerHTML = "PAUSE"
+    if (currentState === stateReady) {
+      currentState = stateActive
+      setButtonStates()
       timer.start()
-    } else {
-      startTimerButton.innerHTML = "RESUME"
+    }
+  }
+
+  function pauseTimer() {
+    if (currentState === stateActive) {
+      currentState = statePaused
+      setButtonStates()
       timer.pause()
     }
+  }
+
+  function stopTimer() {
+    if (currentState === statePaused) {
+      currentState = stateReady
+      setButtonStates()
+      timer.stop()
+
+      initClockDisplay()
+    }
+  }
+
+  function resumeTimer() {
+      if (currentState === statePaused) {
+        currentState = stateActive
+        setButtonStates()
+        timer.start()
+      }
   }
 
   function onTimerTick(time) {
@@ -73,7 +108,7 @@ window.onload = (event) => {
 
   function initClockDisplay() {
     setClockDisplay(timer.duration)
-    startTimerButton.innerHTML = "START"
+    startButton.innerHTML = "START"
   }
 
   function setClockDisplay(timeRemaining) {
@@ -86,6 +121,26 @@ window.onload = (event) => {
 
   function leftPad(text, padText = '0') {
     return `${padText}${text}`.slice(-2);
+  }
+
+  function setButtonStates() {
+    startButton.classList.add('hidden')
+    pauseButton.classList.add('hidden')
+    stopButton.classList.add('hidden')
+    resumeButton.classList.add('hidden')
+
+    switch (currentState) {
+      case stateReady:
+        startButton.classList.remove('hidden')
+        break
+      case stateActive:
+        pauseButton.classList.remove('hidden')
+        break
+      case statePaused:
+        stopButton.classList.remove('hidden')
+        resumeButton.classList.remove('hidden')
+        break
+    }
   }
 
   function playTickSound() {
