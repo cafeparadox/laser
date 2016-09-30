@@ -20,7 +20,7 @@ window.onload = (event) => {
 
   configuration.on('config-timer', (config) => {
     // console.log(`clock.js:: timer config change: ${config.duration}`)
-    if (timer.status() !== 'started' && timer.status() !== 'paused') {
+    if (currentState === stateReady) {
       initTimer()
       initClockDisplay()
     }
@@ -45,8 +45,7 @@ window.onload = (event) => {
   timer.on('complete', onTimerComplete)
   timer.on('tick', onTimerTick)
 
-  initTimer()
-  initClockDisplay()
+  setTimerDisplay()
   setButtonStates()
 
   startButton.onclick = startTimer
@@ -82,7 +81,7 @@ window.onload = (event) => {
       setButtonStates()
       timer.stop()
 
-      initClockDisplay()
+      setTimerDisplay()
     }
   }
 
@@ -94,6 +93,11 @@ window.onload = (event) => {
       }
   }
 
+  function setTimerDisplay() {
+    initTimer()
+    initClockDisplay()
+  }
+
   function onTimerTick(time) {
     // console.log(`onTimerEvent :: ${event.remaining}`)
     setClockDisplay(time.remaining)
@@ -102,7 +106,7 @@ window.onload = (event) => {
 
   function onTimerComplete(time) {
     // console.log('timer complete')
-    initClockDisplay()
+    setTimerDisplay()
     playAlarmSound()
   }
 
