@@ -28,14 +28,17 @@ function onInterval(timer) {
   const timeRemaining = getTimeRemaining(timer.elapsed, timer.duration)
 
   if (timeRemaining.remaining <= 0) {
-    clearInterval(timer.intervalReference)
-    timer.state = completed
-    timer.elapsed = 0
-
+    setCompleted(timer)
     timer.emit('complete', timeRemaining)
   } else {
     timer.emit('tick', timeRemaining)
   }
+}
+
+function setCompleted(timer) {
+  clearInterval(timer.intervalReference)
+  timer.state = completed
+  timer.elapsed = 0
 }
 
 const Timer = function (options) {
@@ -67,6 +70,12 @@ Timer.prototype.pause = function() {
     this.state = paused
 
     this.emit('pause', getTimeRemaining(this.elapsed, this.duration))
+  }
+}
+
+Timer.prototype.stop = function() {
+  if (this.state !== started) {
+    setCompleted(this)
   }
 }
 
