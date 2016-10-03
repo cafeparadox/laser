@@ -34,8 +34,7 @@ window.onload = (event) => {
   }
 
   const clock = document.getElementById('clockdiv')
-  const minutesSpan = clock.querySelector('.minutes')
-  const secondsSpan = clock.querySelector('.seconds')
+  const clockLabel = document.getElementById('clockLabel')
   const startButton = document.getElementById('startButton')
   const pauseButton = document.getElementById('pauseButton')
   const stopButton = document.getElementById('stopButton')
@@ -119,8 +118,7 @@ window.onload = (event) => {
     const seconds = Math.floor((timeRemaining / 1000) % 60)
     const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60)
 
-    minutesSpan.innerHTML = leftPad(minutes);
-    secondsSpan.innerHTML = leftPad(seconds);
+    clockLabel.innerHTML = `${leftPad(minutes)} : ${leftPad(seconds)}`
   }
 
   function leftPad(text, padText = '0') {
