@@ -1,5 +1,6 @@
 {
   "repository": "https://github.com/cafeparadox/laser.git",
+  "author": "Sonny George <sonny@cafeparadox.com>",
   "license": "MIT",
   "build": {
     "app-bundle-id": "com.cafeparadox.Laser",
